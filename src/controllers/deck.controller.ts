@@ -1,18 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-//import deckModel from "../models/deck.model.js";
-//import deckCardsModel from "../models/deckCards.model.js";
+import DecksModel from "../models/decks.model.js";
+import mongoose from "mongoose";
 
 
-/*const getDeckById = async (req: Request, res: Response, next: NextFunction) => {
+const getDeckById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id_deck } = req.params;
-        const deck = await deckModel.findOne({
-            include: {
-                model: deckCardsModel,
-            },
-            where: {
-                id_deck
-            }
+        const deck = await DecksModel.findOne({
+            _id: id_deck
         });
         if (deck) {
             res.status(200).json({ status: true, data: deck });
@@ -25,10 +20,11 @@ import { Request, Response, NextFunction } from "express";
     }
 }
 
+
 const getDecksByUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id_usuario } = req.params;
-        const decks = await deckModel.findAll({where: {id_usuario}});
+        const decks = await DecksModel.find({ heroe: id_usuario });
         if (decks) {
             res.status(200).json({ status: true, data: decks });
         } else {
@@ -44,12 +40,12 @@ const insertDeck = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id_usuario } = req.params;
         const cards = req.body.cards as {id_carta:string, type:number}[];
-        const deck = await deckModel.create({id_usuario});
+        const deck = await DecksModel.create({_id: new mongoose.Types.ObjectId().toString(), heroe: id_usuario});
         
         for(let i=0;i<cards.length;i++){
-            await deckCardsModel.create({
+            await DecksModel.create({
                 id_carta: cards[i].id_carta,
-                id_deck: deck.id_deck!,
+                id_mazo: deck._id,
                 tipo: cards[i].type,
             });
         }
@@ -62,8 +58,9 @@ const insertDeck = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 
+
 export default {
     getDeckById,
     getDecksByUser,
     insertDeck
-}*/
+}

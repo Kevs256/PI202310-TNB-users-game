@@ -5,7 +5,7 @@ dotenv.config();
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-//import deckRouter from './router/deck.router.js';
+import deckRouter from './router/deck.router.js';
 
 class Server{
 
@@ -28,7 +28,7 @@ class Server{
     }
 
     private routes(){
-        //this.app.use(deckRouter.router);
+        this.app.use(deckRouter.router);
 
     }
 
