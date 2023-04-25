@@ -6,6 +6,8 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import deckRouter from './router/deck.router.js';
+import mongoDb from './database/mongo.db.js';
+import inventoryRouter from './router/inventory.router.js';
 
 class Server{
 
@@ -19,6 +21,7 @@ class Server{
     }
 
     private config(){
+        new mongoDb().connect();
         this.app.use(cors({
             origin: process.env.CLIENT_HOST! || '*',
             credentials: true
@@ -29,7 +32,7 @@ class Server{
 
     private routes(){
         this.app.use(deckRouter.router);
-
+        this.app.use(inventoryRouter.router);
     }
 
     private start(){

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const InventoryModel = mongoose.model('Inventory', new mongoose.Schema({
-    _id: String,
     id_user: String,
     product: [
         {

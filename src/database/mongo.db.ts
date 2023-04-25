@@ -9,8 +9,8 @@ export default class mongoDb {
     db:string|undefined;
 
     constructor(){
-        this.user = process.env.MONGO_USER;
-        this.password = process.env.MONGO_PASSWORD;
+        //this.user = process.env.MONGO_USER;
+        //this.password = process.env.MONGO_PASSWORD;
         this.host = process.env.MONGO_HOST;
         this.port = process.env.MONGO_PORT;
         this.db = process.env.MONGO_DB;
