@@ -1,41 +1,46 @@
 import { Request, Response, NextFunction } from "express";
-import DecksModel from "../models/decks.model.js";
+import {deckModel, deckProductsModel} from "../models/deck.model.js";
 
-const getDecksByUser = async (req: Request, res: Response, next: NextFunction) => {
+const getDeckByUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id_user } = req.params;
-        const deck = await DecksModel.findOne({ id_user });
-        console.log(deck)
-        if (deck) {
-            return res.status(200).json({ status: true, data: deck });
-        } else {
-            return res.status(404).json({ status: true, message: 'Deck not found' });
-        }
+        const deck = await deckProductsModel.findOne({
+            include: [{
+                model: deckModel,
+                where: {id_user},
+                attributes: []
+            }],
+            attributes: ['id_product', 'quantity']
+        });
+        return res.status(200).json({ status: true, data: deck });
     } catch (error) {
         res.status(500).json({ status: false, message: 'Server internal error' });
     }
 }
 
-const insertDeck = async (req: Request, res: Response, next: NextFunction) => {
+const createDeck = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id_user} = req.params;
-        const { hero , armors , weapon , items , epics } = req.body
-        const deck = await DecksModel.findOne({id_user});
+        const products = req.body.products as {id_product:string, quantity:number}[];
+        
+        let deck = await deckModel.findOne({where:{id_user}});
+
         if(!deck){
-            await DecksModel.create({
-                id_user:id_user, hero:hero, armors:armors, weapon: weapon, items:items, epics:epics
-            });
-            return res.status(200).json({status: true, message: 'deck create successfully'});
+            deck = await deckModel.create({id_user});
         }else{
-            await DecksModel.findOneAndUpdate({ id_user: id_user }, { 
-                hero: hero,
-                armors: armors,
-                weapon: weapon,
-                items: items,
-                epics: epics
-              });
-              return res.status(200).json({status: true, message: 'deck edit successfully'});
+            await deckProductsModel.destroy({
+                where: {id_deck: deck.id_deck}
+            });
         }
+
+        await deckProductsModel.bulkCreate(
+            products.map(product=>({
+                ...product,
+                id_deck: deck?.id_deck!
+            }))
+        );
+        
+        return res.status(200).json({status: true, message: 'deck create/edit successfully'});
     } catch (error) {
         console.log((error as Error).message);
         res.status(500).json({ status: false, message: 'Server internal error' });
@@ -43,6 +48,6 @@ const insertDeck = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 export default {
-    getDecksByUser,
-    insertDeck
+    getDeckByUser,
+    createDeck
 }
