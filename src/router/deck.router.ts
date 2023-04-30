@@ -1,7 +1,7 @@
+import deckController from "controllers/deck.controller";
 import { Router } from "express";
-import decksController from "../controllers/deck.controller.js";
 
-class deckRouter {
+export default class deckRouter {
 
     router:Router;
 
@@ -11,9 +11,7 @@ class deckRouter {
     }
 
     private config(){
-        this.router.route('/users/:id_user/decks').get(decksController.getDecksByUser);
-        this.router.route('/users/:id_user/decks').post(decksController.insertDeck);
+        this.router.route('/:id_user').get(deckController.getDeckByUser);
+        this.router.route('/:id_user').post(deckController.createDeck);
     }
 }
-
-export default new deckRouter();
