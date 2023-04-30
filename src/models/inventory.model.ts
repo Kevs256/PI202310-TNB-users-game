@@ -1,13 +1,13 @@
 import {Model, DataTypes, BuildOptions} from 'sequelize';
 import db from '../database/database.js';
-import { IInventory, IInventoryProducts } from 'interfaces/IInventory.js';
+import { IInventory, IInventoryProducts } from '../interfaces/IInventory.js';
 
-interface InventoryInstance extends Model<IInventory>, IInventory {}
+export interface InventoryInstance extends Model<IInventory>, IInventory {}
 type InventoryModelStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): InventoryInstance;
 };
 
-interface InventoryProductsInstance extends Model<IInventoryProducts>, IInventoryProducts {}
+export interface InventoryProductsInstance extends Model<IInventoryProducts>, IInventoryProducts {}
 type InventoryProductsModelStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): InventoryProductsInstance;
 };

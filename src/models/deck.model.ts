@@ -1,6 +1,6 @@
 import {Model, DataTypes, BuildOptions} from 'sequelize';
 import db from '../database/database.js';
-import { IDeck, IDeckProducts } from 'interfaces/IDeck.js';
+import { IDeck, IDeckProducts } from '../interfaces/IDeck.js';
 
 interface DeckInstance extends Model<IDeck>, IDeck {}
 type DeckModelStatic = typeof Model & {
@@ -32,6 +32,7 @@ export const deckProductsModel = db.define('deckProducts', {
     },
     id_product: DataTypes.STRING,
     quantity: DataTypes.NUMBER,
+    type: DataTypes.STRING,
     id_deck: DataTypes.NUMBER,
 }, {
   freezeTableName: true,
