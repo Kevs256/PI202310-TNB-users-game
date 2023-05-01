@@ -1,4 +1,4 @@
-import deckController from "controllers/deck.controller";
+import deckController from "../controllers/deck.controller";
 import { Router } from "express";
 
 export default class deckRouter {
