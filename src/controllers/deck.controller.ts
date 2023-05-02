@@ -13,7 +13,7 @@ const getDeckByUser = async (req: Request, res: Response, next: NextFunction) =>
                 where: {id_user},
                 attributes: []
             }],
-            attributes: ['id_product', 'quantity']
+            attributes: ['id_product', 'quantity', 'type']
         });
         return res.status(200).json({ status: true, data: deck||[] });
     } catch (error) {

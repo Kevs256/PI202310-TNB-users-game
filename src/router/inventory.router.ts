@@ -14,6 +14,6 @@ export default class inventoryRouter {
     private config(){
         this.router.route('/:id_user').get(inventoryController.getInventoryByUser);
         this.router.route('/:id_user').post(inventoryController.addToInventory);
-        this.router.route('/:id_user').delete(inventoryController.deleteFromInventory);
+        this.router.route('/:id_user/products/:id_product').delete(inventoryController.deleteFromInventory);
     }
 }
